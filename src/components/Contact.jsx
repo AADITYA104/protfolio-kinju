@@ -3,14 +3,14 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
 const Contact = () => {
     return (
-        <section id="contact" style={{ padding: '100px 0', paddingBottom: '150px' }}>
+        <section id="contact" style={{ paddingBottom: '150px' }} className="responsive-section-padding">
             <div style={{ maxWidth: '1000px', width: '90%', margin: '0 auto' }}>
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    className="glass-panel"
-                    style={{ padding: '4rem', overflow: 'hidden', position: 'relative' }}
+                    className="glass-panel responsive-padding"
+                    style={{ overflow: 'hidden', position: 'relative' }}
                 >
                     {/* Decorative glowing orb */}
                     <div style={{
@@ -25,7 +25,7 @@ const Contact = () => {
                         zIndex: -1
                     }} />
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+                    <div className="responsive-grid-2">
                         <div>
 
                             <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Let's <span className="gradient-text">Collaborate</span></h2>

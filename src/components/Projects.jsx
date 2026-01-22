@@ -59,9 +59,9 @@ const projects = [
 
 const Projects = () => {
     return (
-        <section id="projects" style={{ padding: '100px 0' }}>
+        <section id="projects" className="responsive-section-padding">
             <div style={{ maxWidth: '1200px', width: '90%', margin: '0 auto' }}>
-                <h2 style={{ fontSize: '3rem', marginBottom: '3rem', textAlign: 'right' }}>Selected <span className="gradient-text">Works</span></h2>
+                <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '3rem', textAlign: 'right' }}>Selected <span className="gradient-text">Works</span></h2>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5rem' }}>
                     {projects.map((project, index) => (
@@ -71,12 +71,9 @@ const Projects = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.8 }}
+                            className="responsive-project-row"
                             style={{
-                                display: 'flex',
                                 flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
-                                alignItems: 'center',
-                                gap: '3rem',
-                                flexWrap: 'wrap'
                             }}
                         >
                             {/* Image Container with 3D Tilt Effect */}

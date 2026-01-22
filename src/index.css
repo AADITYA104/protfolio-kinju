@@ -107,6 +107,27 @@ button {
   z-index: 200;
 }
 
+.responsive-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+.responsive-project-row {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.responsive-padding {
+  padding: 4rem;
+}
+
+.responsive-section-padding {
+  padding: 100px 0;
+}
+
 .mobile-menu-overlay {
   position: fixed;
   top: 0;
@@ -144,5 +165,28 @@ button {
 
   .mobile-menu-btn {
     display: block;
+  }
+
+  .responsive-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+  }
+
+  .responsive-project-row {
+    flex-direction: column-reverse !important;
+    /* Image on top, text below usually, or column for text top */
+  }
+
+  /* We might want image on top actually, so let's stick to column if we reorder in JSX, or just column-reverse if image is 2nd in DOM but we want it 1st visually? 
+     Actually, let's keep it simple: flex-direction: column usually puts 1st child on top. 
+     In Projects.jsx, alternating row/row-reverse is used. We need to override that.
+  */
+
+  .responsive-padding {
+    padding: 1.5rem !important;
+  }
+
+  .responsive-section-padding {
+    padding: 60px 0 !important;
   }
 }

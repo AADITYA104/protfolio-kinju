@@ -59,11 +59,11 @@ const educationData = [
 
 const Experience = () => {
     return (
-        <section id="about" style={{ padding: '100px 0' }}>
+        <section id="about" className="responsive-section-padding">
             <div style={{ maxWidth: '1200px', width: '90%', margin: '0 auto' }}>
-                <h2 style={{ fontSize: '3rem', marginBottom: '3rem' }}>Professional <span className="gradient-text">Journey</span></h2>
+                <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '3rem' }}>Professional <span className="gradient-text">Journey</span></h2>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+                <div className="responsive-grid-2">
                     {/* Experience Column */}
                     <div>
                         <h3 style={{ fontSize: '2rem', marginBottom: '2rem', color: 'var(--color-primary)' }}>Experience</h3>
