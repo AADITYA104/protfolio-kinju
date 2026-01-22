@@ -93,7 +93,7 @@ function App() {
       </main>
 
       <footer style={{ textAlign: 'center', padding: '50px 0', color: '#666', fontSize: '0.9rem' }}>
-        © {new Date().getFullYear()} Kinjal Goswami. Designed & Built with ❤️
+        © {new Date().getFullYear()} Kinjal Goswami. Designed & Built
       </footer>
     </div>
   );
