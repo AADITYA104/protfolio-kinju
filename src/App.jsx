@@ -41,12 +41,14 @@ function App() {
       entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }),
       { threshold: 0.35 }
     );
-    sections.forEach(s => obs.observe(s));
+    sections.forEach(s => { if(s) obs.observe(s); });
     return () => obs.disconnect();
   }, [loading]);
 
   return (
     <>
+      <div className="texture-overlay" />
+      
       <AnimatePresence>
         {loading && <Loader onDone={() => setTimeout(() => setLoading(false), 300)} />}
       </AnimatePresence>
@@ -57,13 +59,13 @@ function App() {
 
           {/* Scroll progress bar */}
           <motion.div
-            style={{ scaleX, position: 'fixed', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,#F97316,#FCD34D)', transformOrigin: '0%', zIndex: 1000 }}
+            style={{ scaleX, position: 'fixed', top: 0, left: 0, right: 0, height: 4, background: 'var(--tangerine)', transformOrigin: '0%', zIndex: 1000 }}
           />
 
           {/* NAV */}
-          <nav className="nav" style={{ borderColor: scrolled ? 'rgba(249,115,22,0.15)' : 'rgba(255,255,255,0.07)', transition: 'border-color 0.4s' }}>
+          <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-logo">
-              KINJAL<span style={{ color: '#F97316' }}>.</span>
+              Kinjal<span>.</span>
             </div>
             <ul className="nav-links">
               {NAV_LINKS.map(l => (
@@ -76,7 +78,7 @@ function App() {
             </ul>
             <a href="#contact" className="nav-cta">Hire Me</a>
             <button className="mobile-nav-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
-              <Menu size={22} />
+              <Menu size={24} />
             </button>
           </nav>
 
@@ -84,14 +86,14 @@ function App() {
           <AnimatePresence>
             {menuOpen && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                style={{ position: 'fixed', inset: 0, background: '#080808', zIndex: 490, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2.5rem' }}>
-                <button onClick={() => setMenuOpen(false)} style={{ position: 'absolute', top: 28, right: 24, color: '#fff' }} aria-label="Close menu">
-                  <X size={26} />
+                style={{ position: 'fixed', inset: 0, background: 'var(--warm-white)', zIndex: 1100, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2.5rem' }}>
+                <button onClick={() => setMenuOpen(false)} style={{ position: 'absolute', top: 28, right: 24, color: 'var(--navy)' }} aria-label="Close menu">
+                  <X size={32} />
                 </button>
                 {NAV_LINKS.map((l, i) => (
                   <motion.a key={l.label} href={l.href} onClick={() => setMenuOpen(false)}
                     initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: i * 0.08 }}
-                    style={{ fontFamily: 'Syne', fontSize: '2.5rem', fontWeight: 800, color: '#fff' }}>
+                    style={{ fontFamily: '"DM Serif Display", serif', fontSize: '3rem', color: 'var(--navy)' }}>
                     {l.label}
                   </motion.a>
                 ))}
@@ -109,7 +111,7 @@ function App() {
           </main>
 
           <footer className="footer">
-            <p>© {new Date().getFullYear()} Kinjal Goswami — Designed & Developed with <span style={{ color: '#F97316' }}>♥</span></p>
+            <p>© {new Date().getFullYear()} Kinjal Goswami — Crafting Visual Narratives</p>
           </footer>
         </motion.div>
       )}

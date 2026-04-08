@@ -7,16 +7,17 @@ const Cursor = () => {
   const [hover, setHover] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const sx = useSpring(mx, { stiffness: 350, damping: 35 });
-  const sy = useSpring(my, { stiffness: 350, damping: 35 });
-  const bx = useSpring(mx, { stiffness: 120, damping: 22 });
-  const by = useSpring(my, { stiffness: 120, damping: 22 });
+  const sx = useSpring(mx, { stiffness: 400, damping: 35 });
+  const sy = useSpring(my, { stiffness: 400, damping: 35 });
 
   useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) return;
+
     const move = (e) => {
       mx.set(e.clientX); my.set(e.clientY);
       if (!visible) setVisible(true);
-      const t = e.target.closest('a,button,.filter-tab,.project-card');
+      const t = e.target.closest('a,button,.filter-tab,.project-card,.skill-card,.testimonial-card');
       setHover(!!t);
     };
     window.addEventListener('mousemove', move);
@@ -25,21 +26,15 @@ const Cursor = () => {
 
   if (!visible) return null;
   return (
-    <>
-      <motion.div style={{
-        position: 'fixed', pointerEvents: 'none', zIndex: 9999,
-        width: 6, height: 6, background: '#F97316', borderRadius: '50%',
-        x: sx, y: sy, translateX: '-50%', translateY: '-50%',
-      }} />
-      <motion.div style={{
-        position: 'fixed', pointerEvents: 'none', zIndex: 9998,
-        width: hover ? 48 : 32, height: hover ? 48 : 32,
-        border: `1.5px solid ${hover ? '#F97316' : 'rgba(249,115,22,0.4)'}`,
-        borderRadius: '50%',
-        x: bx, y: by, translateX: '-50%', translateY: '-50%',
-        transition: 'width 0.25s, height 0.25s, border-color 0.25s',
-      }} />
-    </>
+    <motion.div style={{
+      position: 'fixed', pointerEvents: 'none', zIndex: 9999,
+      width: hover ? 40 : 8, height: hover ? 40 : 8,
+      background: hover ? 'rgba(224,123,60,0.08)' : 'rgba(224,123,60,0.5)',
+      border: hover ? '1.5px solid rgba(224,123,60,0.4)' : 'none',
+      borderRadius: '50%', mixBlendMode: hover ? 'normal' : 'normal',
+      x: sx, y: sy, translateX: '-50%', translateY: '-50%',
+      transition: 'width 0.3s, height 0.3s, background 0.3s, border 0.3s',
+    }} />
   );
 };
 export default Cursor;

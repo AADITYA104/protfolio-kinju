@@ -1,29 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Github, Linkedin, Instagram, Mail } from 'lucide-react';
+import { ArrowRight, ArrowDown } from 'lucide-react';
 
-const ROLES = ['Graphic Designer', 'Brand Identity Expert', 'Visual Storyteller', 'Creative Director'];
-
-const letterVariant = {
-  hidden: { y: 80, opacity: 0 },
-  show: { y: 0, opacity: 1, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
-};
-const staggerContainer = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.06 } },
-};
+const ROLES = ['Graphic Designer', 'Brand Strategist', 'Visual Storyteller', 'Creative Director'];
 
 const Hero = () => {
-  const canvasRef = useRef(null);
   const [charIdx, setCharIdx] = useState(0);
   const [roleIdx, setRoleIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
-  // Typing effect
   useEffect(() => {
     const current = ROLES[roleIdx];
     if (!deleting && charIdx === current.length) {
-      const t = setTimeout(() => setDeleting(true), 1800);
+      const t = setTimeout(() => setDeleting(true), 2200);
       return () => clearTimeout(t);
     }
     if (deleting && charIdx === 0) {
@@ -31,146 +20,131 @@ const Hero = () => {
       setRoleIdx(r => (r + 1) % ROLES.length);
       return;
     }
-    const t = setTimeout(() => setCharIdx(c => c + (deleting ? -1 : 1)), deleting ? 40 : 95);
+    const t = setTimeout(() => setCharIdx(c => c + (deleting ? -1 : 1)), deleting ? 35 : 90);
     return () => clearTimeout(t);
   }, [charIdx, deleting, roleIdx]);
 
   const displayText = ROLES[roleIdx].slice(0, charIdx);
 
-  // Canvas particles
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animId;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize();
-
-    const pts = Array.from({ length: 65 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.2 + 0.3,
-      dx: (Math.random() - 0.5) * 0.22,
-      dy: (Math.random() - 0.5) * 0.22,
-      op: Math.random() * 0.35 + 0.05,
-    }));
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pts.forEach((p, i) => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(249,115,22,${p.op})`; ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-        for (let j = i + 1; j < pts.length; j++) {
-          const dist = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
-          if (dist < 110) {
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(249,115,22,${0.04 * (1 - dist / 110)})`; ctx.lineWidth = 0.5; ctx.stroke();
-          }
-        }
-      });
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-    window.addEventListener('resize', resize);
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
-  }, []);
-
-  const socials = [
-    { icon: <Github size={16} />, href: '#', label: 'GitHub' },
-    { icon: <Linkedin size={16} />, href: '#', label: 'LinkedIn' },
-    { icon: <Instagram size={16} />, href: '#', label: 'Instagram' },
-    { icon: <Mail size={16} />, href: 'mailto:kpgoswwami1835@gmail.com', label: 'Email' },
-  ];
-
   return (
-    <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.55 }} />
+    <section id="hero" style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center',
+      background: 'var(--navy)', color: '#fff', position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Subtle grain texture overlay */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.03,
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
+        pointerEvents: 'none' }} />
 
-      {/* Glow blobs */}
-      <div style={{ position: 'absolute', top: '15%', right: '8%', width: 420, height: 420, background: 'radial-gradient(circle,rgba(249,115,22,0.1) 0%,transparent 70%)', borderRadius: '50%', pointerEvents: 'none', animation: 'float 7s ease-in-out infinite' }} />
-      <div style={{ position: 'absolute', bottom: '5%', left: '2%', width: 320, height: 320, background: 'radial-gradient(circle,rgba(34,211,238,0.06) 0%,transparent 70%)', borderRadius: '50%', pointerEvents: 'none', animation: 'float 9s ease-in-out infinite reverse' }} />
+      {/* Decorative shapes */}
+      <div style={{ position: 'absolute', top: '8%', right: '12%', width: 280, height: 280, border: '1px solid rgba(224,123,60,0.08)', borderRadius: '50%', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: '12%', right: '14%', width: 200, height: 200, border: '1px solid rgba(224,123,60,0.05)', borderRadius: '50%', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 120, height: 120, background: 'rgba(224,123,60,0.04)', borderRadius: '50%', pointerEvents: 'none' }} />
 
       <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: '120px', paddingBottom: '80px' }}>
-        <div style={{ maxWidth: '860px' }}>
-
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="section-badge">
-            Portfolio · 2024
-          </motion.div>
-
-          {/* Animated NAME line 1 */}
-          <div style={{ overflow: 'hidden' }}>
-            <motion.div variants={staggerContainer} initial="hidden" animate="show"
-              style={{ display: 'flex', gap: '0.25em', fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 'clamp(3.5rem,9vw,7rem)', lineHeight: 1, letterSpacing: '-2px' }}>
-              {'KINJAL'.split('').map((ch, i) => (
-                <motion.span key={i} variants={letterVariant} style={{ display: 'inline-block' }}>{ch}</motion.span>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Animated NAME line 2 - outlined */}
-          <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
-            <motion.div variants={staggerContainer} initial="hidden" animate="show" transition={{ delayChildren: 0.28 }}
-              style={{ display: 'flex', gap: '0.25em', fontFamily: 'Syne,sans-serif', fontWeight: 800, fontSize: 'clamp(3.5rem,9vw,7rem)', lineHeight: 1, letterSpacing: '-2px', WebkitTextStroke: '1.5px rgba(249,115,22,0.6)', color: 'transparent' }}>
-              {'GOSWAMI'.split('').map((ch, i) => (
-                <motion.span key={i} variants={letterVariant} style={{ display: 'inline-block' }}>{ch}</motion.span>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Typing role */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-            style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: 'clamp(1rem,2vw,1.35rem)', color: '#9CA3AF', marginBottom: '1.5rem', minHeight: '2em' }}>
-            <span style={{ color: '#F97316' }}>▸</span>
-            <span>{displayText}</span>
-            <span style={{ width: 2, height: '1.1em', background: '#F97316', display: 'inline-block', animation: 'blink 1s step-end infinite' }} />
-          </motion.div>
-
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.6 }}
-            style={{ fontSize: '1rem', color: '#9CA3AF', maxWidth: '480px', lineHeight: 1.8, marginBottom: '2.5rem' }}>
-            IT Student & Creative Designer crafting high-impact visual narratives — brand identities, digital campaigns, and design systems that leave a mark.
-          </motion.p>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
-            style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-            <motion.a href="#projects" className="btn-primary" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              View My Work <ArrowRight size={16} />
-            </motion.a>
-            <motion.a href="#contact" className="btn-ghost" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              Let's Talk
-            </motion.a>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.3 }}
-            style={{ display: 'flex', gap: '3rem', marginTop: '4rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.07)', flexWrap: 'wrap' }}>
-            {[['10+', 'Happy Clients'], ['50+', 'Design Projects'], ['1+', 'Years Experience']].map(([v, l]) => (
-              <div key={l}>
-                <div style={{ fontFamily: 'Syne', fontSize: '2rem', fontWeight: 800, color: '#F97316' }}>{v}</div>
-                <div style={{ fontSize: '0.82rem', color: '#6B7280', marginTop: '2px' }}>{l}</div>
+        <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '4rem', alignItems: 'center' }}>
+          {/* Left content */}
+          <div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}>
+              <div className="section-label" style={{ color: 'rgba(224,123,60,0.8)' }}>
+                Portfolio · 2024
               </div>
-            ))}
+            </motion.div>
+
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              style={{ fontSize: 'clamp(3.2rem,6.5vw,5.5rem)', letterSpacing: '-2px', marginBottom: '0.4rem', color: '#fff' }}>
+              Kinjal
+            </motion.h1>
+
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              style={{ fontSize: 'clamp(3.2rem,6.5vw,5.5rem)', letterSpacing: '-2px', marginBottom: '1.5rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.4)' }}>
+              Goswami<span style={{ color: '#E07B3C', fontStyle: 'normal' }}>.</span>
+            </motion.h1>
+
+            {/* Typing */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.15rem', color: 'rgba(255,255,255,0.5)', marginBottom: '1.8rem', minHeight: '1.8em' }}>
+              <span style={{ width: 24, height: 1.5, background: '#E07B3C', display: 'inline-block' }} />
+              <span style={{ color: 'rgba(255,255,255,0.75)' }}>{displayText}</span>
+              <span style={{ width: 1.5, height: '1.1em', background: '#E07B3C', display: 'inline-block', animation: 'blink 1s step-end infinite' }} />
+            </motion.div>
+
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.6 }}
+              style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.45)', maxWidth: '440px', lineHeight: 1.85, marginBottom: '2.5rem' }}>
+              Crafting visual narratives that resonate — from brand identities to digital campaigns. Bringing unique ideas to life with passion and precision.
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}
+              style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <motion.a href="#projects" className="btn-fill" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                View My Work <ArrowRight size={16} />
+              </motion.a>
+              <motion.a href="#contact" className="btn-outline-light" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                Let's Talk
+              </motion.a>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}
+              style={{ display: 'flex', gap: '3rem', marginTop: '4rem', paddingTop: '2rem',
+                borderTop: '1px solid rgba(255,255,255,0.06)', flexWrap: 'wrap' }}>
+              {[['14+', 'Projects Finished'], ['8+', 'Years of Experience'], ['>95%', 'Client Retention']].map(([v, l]) => (
+                <div key={l}>
+                  <div style={{ fontFamily: '"DM Serif Display",serif', fontSize: '1.8rem', color: '#E07B3C' }}>{v}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: '4px', letterSpacing: '0.5px' }}>{l}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right - Visual accent card */}
+          <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.8 }}
+            className="hero-visual" style={{ position: 'relative' }}>
+            <div style={{
+              width: '100%', aspectRatio: '3/4', borderRadius: '16px',
+              background: 'linear-gradient(165deg, #242A3B 0%, #1A1F2E 100%)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexDirection: 'column', gap: '2rem', padding: '3rem',
+              position: 'relative', overflow: 'hidden',
+            }}>
+              {/* Corner decorations */}
+              <div style={{ position: 'absolute', top: 20, left: 20, width: 30, height: 30, borderTop: '1.5px solid rgba(224,123,60,0.3)', borderLeft: '1.5px solid rgba(224,123,60,0.3)' }} />
+              <div style={{ position: 'absolute', bottom: 20, right: 20, width: 30, height: 30, borderBottom: '1.5px solid rgba(224,123,60,0.3)', borderRight: '1.5px solid rgba(224,123,60,0.3)' }} />
+
+              {/* Monogram */}
+              <div style={{
+                width: 100, height: 100, borderRadius: '50%',
+                border: '2px solid rgba(201,169,110,0.35)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: '"DM Serif Display",serif', fontSize: '2.2rem', color: '#C9A96E',
+              }}>K</div>
+
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontFamily: '"DM Serif Display",serif', fontSize: '1.5rem', color: '#fff', marginBottom: '6px' }}>Kinjal Goswami</div>
+                <div style={{ fontSize: '0.75rem', letterSpacing: '3px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)' }}>Graphic Designer</div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                {['#E07B3C', '#7A9E82', '#C9A96E'].map(c => (
+                  <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
+                ))}
+              </div>
+
+              <div style={{ fontSize: '0.7rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)' }}>
+                Crafting Visual Narratives
+              </div>
+            </div>
           </motion.div>
         </div>
-
-        {/* Social sidebar */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-          style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: '1.4rem', alignItems: 'center' }}>
-          <div style={{ width: 1, height: 60, background: 'linear-gradient(to bottom,transparent,rgba(249,115,22,0.4))' }} />
-          {socials.map(({ icon, href, label }) => (
-            <motion.a key={label} href={href} aria-label={label} whileHover={{ x: -4, color: '#F97316' }} style={{ color: '#6B7280', display: 'block' }}>{icon}</motion.a>
-          ))}
-          <div style={{ width: 1, height: 60, background: 'linear-gradient(to top,transparent,rgba(249,115,22,0.4))' }} />
-        </motion.div>
       </div>
 
-      {/* Scroll arrow */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
-        style={{ position: 'absolute', bottom: '36px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ width: 1, height: 48, background: 'linear-gradient(to bottom,#F97316,transparent)' }} />
-        <span style={{ fontSize: '0.62rem', letterSpacing: '3px', color: '#6B7280', textTransform: 'uppercase' }}>Scroll</span>
+      {/* Scroll indicator */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+        style={{ position: 'absolute', bottom: '32px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+        <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}>
+          <ArrowDown size={16} color="rgba(255,255,255,0.25)" />
+        </motion.div>
       </motion.div>
     </section>
   );

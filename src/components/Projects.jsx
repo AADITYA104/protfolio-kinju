@@ -3,15 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 
 const PROJECTS = [
-  { title: 'Brand Identity Kit', cat: 'Branding', img: '/projects/project1.jpg', grad: 'linear-gradient(135deg,#F97316,#D97706)', desc: 'Complete branding set — logos, cards, letterheads.' },
-  { title: 'Social Media Campaign', cat: 'Social Media', img: '/projects/project2.jpg', grad: 'linear-gradient(135deg,#7C3AED,#DB2777)', desc: 'High-impact digital poster series for social marketing.' },
-  { title: 'Poster Series', cat: 'Print', img: '/projects/project3.jpg', grad: 'linear-gradient(135deg,#0891B2,#0D9488)', desc: 'Professional promotional posters for corporate events.' },
-  { title: 'Product Packaging', cat: 'Packaging', img: '/projects/project4.jpg', grad: 'linear-gradient(135deg,#059669,#0D9488)', desc: 'Premium packaging for Manubhai Gathiyawala.' },
-  { title: 'Travel Promotion', cat: 'Social Media', img: '/projects/project5.jpg', grad: 'linear-gradient(135deg,#4F46E5,#7C3AED)', desc: 'Winter travel creatives for Shimla & Manali packages.' },
-  { title: 'Brand Legacy Ad', cat: 'Branding', img: '/projects/project6.jpg', grad: 'linear-gradient(135deg,#DC2626,#F97316)', desc: 'Campaign highlighting trust & legacy since 1989.' },
-  { title: 'Tour Brochure', cat: 'Print', img: '/projects/project7.jpg', grad: 'linear-gradient(135deg,#0891B2,#4F46E5)', desc: 'Travel brochure with destinations, transport & amenities.' },
-  { title: 'Brand Creative', cat: 'Social Media', img: '/projects/project8.jpg', grad: 'linear-gradient(135deg,#F97316,#EF4444)', desc: 'Pop-culture brand marketing for Gossip Guru Media.' },
-  { title: 'Medical Awareness', cat: 'Print', img: '/projects/project9.jpg', grad: 'linear-gradient(135deg,#059669,#22D3EE)', desc: 'Health awareness poster for CoreLife Hospital.' },
+  { title: 'Brand Identity Kit', cat: 'Branding', img: '/projects/project1.jpg', desc: 'Complete branding set — logos, cards, letterheads with cohesive identity.' },
+  { title: 'Social Media Campaign', cat: 'Social Media', img: '/projects/project2.jpg', desc: 'High-impact digital poster series for social marketing engagement.' },
+  { title: 'Poster Series', cat: 'Print', img: '/projects/project3.jpg', desc: 'Professional promotional posters for corporate events.' },
+  { title: 'Product Packaging', cat: 'Packaging', img: '/projects/project4.jpg', desc: 'Premium packaging design bringing heritage to life for Manubhai.' },
+  { title: 'Travel Promotion', cat: 'Social Media', img: '/projects/project5.jpg', desc: 'Winter travel creatives designed to elevate booking rates.' },
+  { title: 'Brand Legacy Ad', cat: 'Branding', img: '/projects/project6.jpg', desc: 'Campaign highlighting trust & legacy since 1989 for physical retail.' },
+  { title: 'Tour Brochure', cat: 'Print', img: '/projects/project7.jpg', desc: 'Immersive travel brochure layout with detailed destination icons.' },
+  { title: 'Brand Creative', cat: 'Social Media', img: '/projects/project8.jpg', desc: 'Pop-culture brand marketing crafted for Gossip Guru Media.' },
+  { title: 'Medical Awareness', cat: 'Print', img: '/projects/project9.jpg', desc: 'Health awareness poster maintaining strict corporate medical guidelines.' },
 ];
 
 const FILTERS = ['All', 'Branding', 'Social Media', 'Print', 'Packaging'];
@@ -23,47 +23,52 @@ const Projects = () => {
   return (
     <section id="projects" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
       <div className="container">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ marginBottom: '3rem' }}>
-          <div className="section-badge">Selected Work</div>
-          <h2 style={{ fontSize: 'clamp(2rem,4vw,2.8rem)' }}>
-            Design <span className="gradient-text">Projects</span>
+        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-50px' }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} style={{ marginBottom: '3rem' }}>
+          <div className="section-label">Selected Work</div>
+          <h2 style={{ fontSize: 'clamp(2.2rem,4.5vw,3rem)', color: 'var(--navy)' }}>
+            Design <em style={{ color: 'var(--tangerine)' }}>Projects</em>
           </h2>
         </motion.div>
 
         {/* Filter Tabs */}
-        <div className="filter-tabs">
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.5 }} className="filter-tabs">
           {FILTERS.map(f => (
             <button key={f} className={`filter-tab ${active === f ? 'active' : ''}`} onClick={() => setActive(f)}>{f}</button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Grid */}
         <motion.div layout className="projects-grid">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, i) => (
               <motion.div key={p.title} layout
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.85 }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
                 className="project-card">
-                {/* Try real image, fallback gradient */}
+                
+                {/* Fallback image style handles image 404 easily */}
+                <div style={{ position: 'absolute', inset: 0, background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontFamily: '"DM Serif Display",serif', fontSize: '1.5rem', color: 'var(--sage)', opacity: 0.5 }}>{p.cat}</span>
+                </div>
+                
                 <img
                   className="project-card-bg"
                   src={p.img}
                   alt={p.title}
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
+                  onError={e => { e.currentTarget.style.display = 'none'; }}
                 />
-                <div className="project-gradient-bg" style={{ display: 'none', background: p.grad, position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: 'Syne', fontSize: '1.3rem', fontWeight: 800, color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '1rem' }}>{p.cat}</span>
-                </div>
+                
                 <div className="project-card-overlay">
-                  <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#F97316', marginBottom: '6px' }}>{p.cat}</span>
-                  <h3 style={{ fontFamily: 'Syne', fontSize: '1.1rem', fontWeight: 700, marginBottom: '6px' }}>{p.title}</h3>
-                  <p style={{ fontSize: '0.8rem', color: '#9CA3AF', marginBottom: '1rem', lineHeight: 1.6 }}>{p.desc}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#F97316', fontSize: '0.8rem', fontWeight: 600 }}>
-                    <ExternalLink size={14} /> View Project
+                  <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--tangerine)', marginBottom: '8px' }}>{p.cat}</span>
+                  <h3 style={{ fontFamily: '"DM Serif Display",serif', fontSize: '1.6rem', color: '#fff', marginBottom: '8px' }}>{p.title}</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', marginBottom: '1.2rem', lineHeight: 1.6 }}>{p.desc}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontSize: '0.85rem', fontWeight: 500 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--tangerine)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ExternalLink size={14} color="#fff" />
+                    </div>
                   </div>
                 </div>
               </motion.div>
