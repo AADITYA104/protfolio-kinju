@@ -1,102 +1,119 @@
-import { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Stars, Float, Text3D, Center } from '@react-three/drei';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Menu, X, Github, Linkedin, Mail, Instagram, ExternalLink } from 'lucide-react';
-import './index.css';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 
-// Components (We will define them in this file for simplicity or split later if needed, 
-// but for a single-file impact, I'll put the Scene here first or import it).
-// Actually, let's keep it modular. I'll create separate files.
-
+import Loader from './components/Loader';
+import Cursor from './components/Cursor';
 import Hero from './components/Hero';
+import Skills from './components/Skills';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
-import Skills from './components/Skills';
+import './index.css';
+
+const NAV_LINKS = [
+  { label: 'About', href: '#about' },
+  { label: 'Work', href: '#projects' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Contact', href: '#contact' },
+];
 
 function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+  const [scrolled, setScrolled] = useState(false);
+
   const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  // Track scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Active section tracking
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[id]');
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }),
+      { threshold: 0.35 }
+    );
+    sections.forEach(s => obs.observe(s));
+    return () => obs.disconnect();
+  }, [loading]);
 
   return (
-    <div className="app-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* Navigation */}
-      <nav className="glass-panel" style={{
-        position: 'fixed',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 200,
-        padding: '10px 30px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '90%',
-        maxWidth: '1200px'
-      }}>
-        <div style={{ fontWeight: 800, fontSize: '1.2rem', letterSpacing: '1px' }}>
-          KINJAL<span className="gradient-text">GOSWAMI</span>
-        </div>
+    <>
+      <AnimatePresence>
+        {loading && <Loader onDone={() => setTimeout(() => setLoading(false), 300)} />}
+      </AnimatePresence>
 
-        <div className="desktop-menu">
-          <a href="#hero">Home</a>
-          <a href="#about">About</a>
-          <a href="#projects">Work</a>
-          <a href="#contact">Contact</a>
-        </div>
+      {!loading && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+          <Cursor />
 
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X color="white" /> : <Menu color="white" />}
-        </button>
-      </nav>
+          {/* Scroll progress bar */}
+          <motion.div
+            style={{ scaleX, position: 'fixed', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,#F97316,#FCD34D)', transformOrigin: '0%', zIndex: 1000 }}
+          />
 
-      <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`}>
-        <a href="#hero" onClick={() => setIsMenuOpen(false)}>Home</a>
-        <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
-        <a href="#projects" onClick={() => setIsMenuOpen(false)}>Work</a>
-        <a href="#contact" onClick={() => setIsMenuOpen(false)}>Contact</a>
-      </div>
+          {/* NAV */}
+          <nav className="nav" style={{ borderColor: scrolled ? 'rgba(249,115,22,0.15)' : 'rgba(255,255,255,0.07)', transition: 'border-color 0.4s' }}>
+            <div className="nav-logo">
+              KINJAL<span style={{ color: '#F97316' }}>.</span>
+            </div>
+            <ul className="nav-links">
+              {NAV_LINKS.map(l => (
+                <li key={l.label}>
+                  <a href={l.href} className={activeSection === l.href.slice(1) ? 'active' : ''}>
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="#contact" className="nav-cta">Hire Me</a>
+            <button className="mobile-nav-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+              <Menu size={22} />
+            </button>
+          </nav>
 
-      {/* 3D Background - Fixed */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1 }}>
-        <Canvas camera={{ position: [0, 0, 5] }}>
-          <color attach="background" args={['#050505']} />
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-          {/* We can add some floating geometry here */}
-          <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-            <mesh position={[3, -1, -2]}>
-              <torusKnotGeometry args={[1, 0.3, 100, 16]} />
-              <meshStandardMaterial color="#aa00ff" wireframe opacity={0.1} transparent />
-            </mesh>
-          </Float>
-          <Float speed={1.5} rotationIntensity={2} floatIntensity={0.5}>
-            <mesh position={[-4, 2, -5]}>
-              <icosahedronGeometry args={[1, 0]} />
-              <meshStandardMaterial color="#00e5ff" wireframe opacity={0.1} transparent />
-            </mesh>
-          </Float>
-        </Canvas>
-      </div>
+          {/* Mobile menu */}
+          <AnimatePresence>
+            {menuOpen && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                style={{ position: 'fixed', inset: 0, background: '#080808', zIndex: 490, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2.5rem' }}>
+                <button onClick={() => setMenuOpen(false)} style={{ position: 'absolute', top: 28, right: 24, color: '#fff' }} aria-label="Close menu">
+                  <X size={26} />
+                </button>
+                {NAV_LINKS.map((l, i) => (
+                  <motion.a key={l.label} href={l.href} onClick={() => setMenuOpen(false)}
+                    initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: i * 0.08 }}
+                    style={{ fontFamily: 'Syne', fontSize: '2.5rem', fontWeight: 800, color: '#fff' }}>
+                    {l.label}
+                  </motion.a>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-      <main style={{ paddingTop: '100px', display: 'flex', flexDirection: 'column', gap: '0px' }}>
-        <Hero />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Contact />
-      </main>
+          {/* Sections */}
+          <main>
+            <Hero />
+            <Skills />
+            <Projects />
+            <Experience />
+            <Contact />
+          </main>
 
-      <footer style={{ textAlign: 'center', padding: '50px 0', color: '#666', fontSize: '0.9rem' }}>
-        © {new Date().getFullYear()} Kinjal Goswami. Designed & Built
-      </footer>
-    </div>
+          <footer className="footer">
+            <p>© {new Date().getFullYear()} Kinjal Goswami — Designed & Developed with <span style={{ color: '#F97316' }}>♥</span></p>
+          </footer>
+        </motion.div>
+      )}
+    </>
   );
 }
-
 export default App;

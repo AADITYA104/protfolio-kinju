@@ -1,134 +1,83 @@
 import { motion } from 'framer-motion';
 
-const experienceData = [
-    {
-        role: "Graphic Design Intern",
-        company: "IT Hub Software Solutions, Bhavnagar",
-        period: "6 Months",
-        desc: [
-            "Managed 10+ local clients for branding and design solutions.",
-            "Designed 50+ social media assets.",
-            "Created logo concepts and product packaging.",
-            "Produced dynamic product animations (GIFs)."
-        ]
-    },
-    {
-        role: "Graphic Designer",
-        company: "Maxgen Technologies Pvt. Ltd.",
-        period: "6 Months",
-        desc: [
-            "Created high-quality visual content for digital and print media.",
-            "Collaborated with creative team for brand consistency.",
-            "Utilized Adobe Creative Suite for professional layouts."
-        ]
-    },
-    {
-        role: "Technical Tutor (Diploma Stream)",
-        company: "Technical Institution",
-        period: "6 Months",
-        desc: ["Delivered technical lectures to Diploma Engineering students.", "Mentored students in project work."]
-    },
-    {
-        role: "Private Educator",
-        company: "Educational Center",
-        period: "4 Months",
-        desc: ["Tutored English medium students in core subjects."]
-    }
+const experiences = [
+  {
+    year: '2023 – Present',
+    role: 'Freelance Graphic Designer',
+    company: 'Self-Employed',
+    desc: 'Providing end-to-end design solutions — brand identity, social media campaigns, print collateral, and packaging for clients across industries.',
+    tags: ['Branding', 'Social Media', 'Print'],
+  },
+  {
+    year: '2022 – Present',
+    role: 'B.Tech Information Technology',
+    company: 'University, Gujarat',
+    desc: 'Pursuing a degree in Information Technology, merging technical knowledge with creative design thinking to build innovative digital solutions.',
+    tags: ['IT', 'Web Dev', 'Design Thinking'],
+  },
+  {
+    year: '2022 – 2023',
+    role: 'Graphic Design Intern',
+    company: 'Design Studio',
+    desc: 'Worked on real-world branding projects, social media creatives, and promotional materials. Developed strong skills in visual communication and client management.',
+    tags: ['Internship', 'Branding', 'Canva'],
+  },
+  {
+    year: '2021 – 2022',
+    role: 'Social Media Designer',
+    company: 'Gossip Guru Media',
+    desc: 'Created engaging social media content, designed promotional graphics, and helped establish a consistent brand voice across digital platforms.',
+    tags: ['Social Media', 'Content', 'Digital'],
+  },
 ];
 
-const educationData = [
-    {
-        degree: "Bachelor of Engineering (IT)",
-        school: "Gyanmanjri Institute of Technology, Bhavnagar",
-        year: "Expected Dec 2025",
-        score: "7.91 CGPA / 7.39 SPI"
-    },
-    {
-        degree: "HSC",
-        school: "Shree Vallabh Kanya Kelavani Mandal, Rajkot",
-        year: "March 2022",
-        score: "60.58%"
-    },
-    {
-        degree: "SSC",
-        school: "Shree Vivekanand School, Botad",
-        year: "March 2020",
-        score: "91.07%"
-    }
-];
+const Experience = () => (
+  <section id="experience" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+    <div className="container">
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ marginBottom: '3.5rem' }}>
+        <div className="section-badge">Experience</div>
+        <h2 style={{ fontSize: 'clamp(2rem,4vw,2.8rem)' }}>
+          My Journey <span className="gradient-text">So Far</span>
+        </h2>
+      </motion.div>
 
-const Experience = () => {
-    return (
-        <section id="about" className="responsive-section-padding">
-            <div style={{ maxWidth: '1200px', width: '90%', margin: '0 auto' }}>
-                <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '3rem' }}>Professional <span className="gradient-text">Journey</span></h2>
-
-                <div className="responsive-grid-2">
-                    {/* Experience Column */}
-                    <div>
-                        <h3 style={{ fontSize: '2rem', marginBottom: '2rem', color: 'var(--color-primary)' }}>Experience</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                            {experienceData.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="glass-panel"
-                                    style={{ padding: '1.5rem' }}
-                                >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                        <h4 style={{ fontSize: '1.25rem' }}>{item.role}</h4>
-                                        <span style={{ color: 'var(--color-secondary)', fontSize: '0.9rem' }}>{item.period}</span>
-                                    </div>
-                                    <p style={{ color: '#aaa', marginBottom: '1rem', fontStyle: 'italic' }}>{item.company}</p>
-                                    <ul style={{ paddingLeft: '20px', color: '#ccc', fontSize: '0.95rem' }}>
-                                        {item.desc.map((d, i) => <li key={i}>{d}</li>)}
-                                    </ul>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Education Column */}
-                    <div>
-                        <h3 style={{ fontSize: '2rem', marginBottom: '2rem', color: 'var(--color-secondary)' }}>Education</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                            {educationData.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="glass-panel"
-                                    style={{ padding: '1.5rem' }}
-                                >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                        <h4 style={{ fontSize: '1.25rem' }}>{item.degree}</h4>
-                                        <span style={{ color: 'var(--color-primary)', fontSize: '0.9rem' }}>{item.year}</span>
-                                    </div>
-                                    <p style={{ color: '#aaa', marginBottom: '0.5rem' }}>{item.school}</p>
-                                    <p style={{ color: '#fff' }}>Score: {item.score}</p>
-                                </motion.div>
-                            ))}
-
-                            <div style={{ marginTop: '2rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#fff' }}>Certifications</h3>
-                                <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                                    <ul style={{ paddingLeft: '20px', color: '#ccc' }}>
-                                        <li>Google UX Design Professional Certificate (In Progress)</li>
-                                        <li>Adobe Certified Professional in Visual Design</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div className="timeline-wrap">
+        {experiences.map((exp, i) => (
+          <motion.div key={i} className="timeline-item"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ delay: i * 0.1, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}>
+            <div className="timeline-dot" />
+            <div className="timeline-year">{exp.year}</div>
+            <div style={{
+              padding: '24px 28px',
+              background: '#0f0f0f',
+              border: '1px solid rgba(255,255,255,0.07)',
+              borderRadius: '16px',
+              transition: 'border-color 0.3s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(249,115,22,0.35)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'}
+            >
+              <h3 style={{ fontFamily: 'Syne', fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>{exp.role}</h3>
+              <div style={{ fontSize: '0.82rem', color: '#F97316', fontWeight: 600, marginBottom: '0.8rem' }}>{exp.company}</div>
+              <p style={{ color: '#9CA3AF', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '1rem' }}>{exp.desc}</p>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {exp.tags.map(tag => (
+                  <span key={tag} style={{
+                    padding: '3px 12px', borderRadius: '100px',
+                    background: 'rgba(249,115,22,0.08)',
+                    border: '1px solid rgba(249,115,22,0.2)',
+                    fontSize: '0.72rem', fontWeight: 600, color: '#F97316',
+                  }}>{tag}</span>
+                ))}
+              </div>
             </div>
-        </section>
-    );
-};
-
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 export default Experience;
