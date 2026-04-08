@@ -47,7 +47,7 @@ const Hero = () => {
           <div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}>
               <div className="section-label" style={{ color: 'rgba(224,123,60,0.8)' }}>
-                Portfolio · 2024
+                Portfolio · 2026
               </div>
             </motion.div>
 
